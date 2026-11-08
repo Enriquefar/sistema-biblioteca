@@ -12,18 +12,18 @@
 <table border="1" cellpadding="6">
     <thead>
     <tr>
+        <th>ID</th>
         <th>Título</th>
         <th>Autor</th>
         <th>ISBN</th>
-        <th>Ações</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="livro, status : ${livros}">
+    <tr th:each="livro : ${livros}">
+        <td th:text="${livro.id}"></td>
         <td th:text="${livro.titulo}"></td>
         <td th:text="${livro.autor}"></td>
         <td th:text="${livro.isbn}"></td>
-        <td><a th:href="@{/livros/excluir/{i}(i=${status.index})}">Excluir</a></td>
     </tr>
     </tbody>
 </table>

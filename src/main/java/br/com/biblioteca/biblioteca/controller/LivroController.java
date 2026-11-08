@@ -1,21 +1,24 @@
 package br.com.biblioteca.biblioteca.controller;
 
 import br.com.biblioteca.biblioteca.model.Livro;
+import br.com.biblioteca.biblioteca.repository.LivroRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class LivroController {
 
-    // Aula 6: lista em memória (volátil). Será substituída por Repository na Aula 7.
-    private final List<Livro> livros = new ArrayList<>();
+    // Aula 7: a List em memória foi substituída pelo Repository (injeção por construtor).
+    private final LivroRepository repository;
+
+    public LivroController(LivroRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/livros/novo")
     public String novoLivro(Model model) {
@@ -23,26 +26,18 @@ public class LivroController {
         return "livros/form";
     }
 
-    // CREATE
     @PostMapping("/livros")
-    public String cadastrar(@ModelAttribute Livro livro) {
-        livros.add(livro);
+    public String cadastrarLivro(@ModelAttribute Livro livro) {
+        repository.save(livro);
         return "redirect:/livros";
     }
 
-    // READ
     @GetMapping("/livros")
-    public String listar(Model model) {
+    public String listarLivros(Model model) {
+        List<Livro> livros = repository.findAll();
         model.addAttribute("livros", livros);
         return "livros/lista";
     }
 
-    // DELETE (por índice)
-    @GetMapping("/livros/excluir/{indice}")
-    public String excluir(@PathVariable int indice) {
-        if (indice >= 0 && indice < livros.size()) {
-            livros.remove(indice);
-        }
-        return "redirect:/livros";
-    }
+    // Excluir/Editar: CRUD completo na Aula 8 (deleteById / findById com ID único).
 }
