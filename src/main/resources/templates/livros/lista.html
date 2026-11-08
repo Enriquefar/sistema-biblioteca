@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Livros</title>
+</head>
+<body>
+<h1>Livros cadastrados</h1>
+
+<p>Total de livros: <span th:text="${livros.size()}">0</span></p>
+
+<table border="1" cellpadding="6">
+    <thead>
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>ISBN</th>
+        <th>Ações</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="livro, status : ${livros}">
+        <td th:text="${livro.titulo}"></td>
+        <td th:text="${livro.autor}"></td>
+        <td th:text="${livro.isbn}"></td>
+        <td><a th:href="@{/livros/excluir/{i}(i=${status.index})}">Excluir</a></td>
+    </tr>
+    </tbody>
+</table>
+
+<p><a th:href="@{/livros/novo}">Cadastrar novo livro</a></p>
+</body>
+</html>
